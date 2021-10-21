@@ -1,0 +1,57 @@
+Server.java
+import java.io.*;
+import java.net.*;
+public class Server {
+public static void main(String[] args){
+try{
+ServerSocket server = new ServerSocket(3333);
+Socket socket = server.accept();
+DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStre
+am());
+BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+String request="", response = "";
+while(!request.equals("end")){
+request = dataInputStream.readUTF();
+System.out.println("\nClient: "+request+"\n");
+response = buffer.readLine();
+dataOutputStream.writeUTF(response);
+dataOutputStream.flush();
+}
+dataInputStream.close();
+socket.close();
+server.close();
+}catch(Exception e){
+}
+}
+}
+
+
+
+
+Client.java
+import java.io.*;
+import java.net.*;
+class Client{
+public static void main(String[] args){
+try{
+Socket socket = new Socket("localhost",3333);
+DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStre
+am());
+BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+String response = "", request = "";
+System.out.println();
+while(!response.equals("end")){
+request = buffer.readLine();
+dataOutputStream.writeUTF(request);
+dataOutputStream.flush();
+response = dataInputStream.readUTF();
+System.out.println("\nServer: "+response+"\n");
+}
+dataOutputStream.close();
+socket.close();
+}catch(Exception e){
+}
+}
+}
