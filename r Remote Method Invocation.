@@ -1,0 +1,98 @@
+Program_1
+
+
+
+Adder.java
+import java.rmi.*;
+public interface Adder extends Remote{
+public int add(int x,int y)throws RemoteException;
+}
+Myserver.java
+import java.rmi.*;
+import java.rmi.registry.*;
+public class MyServer{
+public static void main(String args[]){
+try{
+Adder stub=new AdderRemote();
+Naming.rebind("rmi://localhost:5000/sonoo",stub);
+}catch(Exception e){System.out.println(e);}
+}
+}
+Adderremote.java
+import java.rmi.*;
+import java.rmi.server.*;
+public class AdderRemote extends UnicastRemoteObject implements Adder{
+AdderRemote()throws RemoteException{
+super();
+}
+public int add(int x,int y){return x+y;}
+}
+
+Myclient.java
+import java.rmi.*;
+public class MyClient{
+public static void main(String args[]){
+try{
+Adder stub=(Adder)Naming.lookup("rmi://localhost:5000/sonoo");
+System.out.println(stub.add(34,4));
+}catch(Exception e){System.out.println(e);}
+}
+}
+
+
+Progra_2
+
+Adder.java
+import java.rmi.*;
+public interface Adder extends Remote{
+public int add(int x,int y)throws RemoteException;
+}
+
+
+RMI_Server.java
+
+
+import java.rmi.*;
+import java.rmi.registry.*;
+public class RMI_Server{
+public static void main(String args[]){
+try{
+Adder stub=new AdderRemote();
+System.out.println("RMI Server has started...");
+Naming.rebind("rmi://localhost:5000/sonoo",stub);
+}catch(Exception e){
+System.out.println(e);
+}}}
+
+AdderRemote.java
+
+import java.rmi.*;
+import java.rmi.server.*;
+public class AdderRemote extends UnicastRemoteObject implements Adder{
+String[] userDB = {"Nisarg","Keyur","Rinkesh","Rashesh"};
+AdderRemote()throws RemoteException{
+super();
+}
+public String findUser(int id){
+return userDB[id];
+}
+
+}
+
+
+RMI_Client.java
+import java.rmi.*;
+public class RMI_Client{
+public static void main(String args[]){
+try{
+Adder stub=(Adder)Naming.lookup("rmi://localhost:5000/sonoo");
+BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+while(true){
+System.out.print("Enter User's Id: ");
+String id = receiveRead.readLine();
+System.out.println(stub.findUser(id));
+}
+}catch(Exception e){System.out.println(e);}
+}
+}
+
