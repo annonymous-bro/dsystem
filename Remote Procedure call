@@ -1,0 +1,150 @@
+PROGRAM_1
+
+
+RPC_Server.java
+import java.io.*;
+import java.net.*;
+class RPC_Server{
+public static void main(String[] args) throws Exception {
+ServerSocket sersock = new ServerSocket(3000);
+System.out.println("Server Started... ");
+Socket sock = sersock.accept( );
+OutputStream ostream = sock.getOutputStream();
+PrintWriter pwrite = new PrintWriter(ostream, true);
+InputStream istream = sock.getInputStream();
+BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+String fun;
+int a,b; float c;
+while(true) {
+fun = receiveRead.readLine();
+if(fun != null)
+System.out.println("Requested Procedure : "+fun);
+a = Integer.parseInt(receiveRead.readLine());
+b = Integer.parseInt(receiveRead.readLine());
+System.out.println("Parameters: "+a+" "+b);
+if(fun.compareTo("add")==0){
+c=a+b;
+System.out.println("Addition = "+c);
+pwrite.println("Addition = "+c);
+}
+if(fun.compareTo("sub")==0){
+ PEN NO: 180840131003
+5
+c=a-b;
+System.out.println("Substraction = "+c);
+pwrite.println("Substraction = "+c);
+}
+if(fun.compareTo("mul")==0){
+c=a*b;
+System.out.println("Multiplication = "+c);
+pwrite.println("Multiplication = "+c);
+}
+if(fun.compareTo("div")==0){
+c=a/b;
+System.out.println("Division = "+c);
+pwrite.println("Division = "+c);
+}
+System.out.flush();
+}
+}
+}
+
+
+
+
+
+
+Client.java
+import java.io.*;
+import java.net.*;
+class RPC_Client{
+public static void main(String[] args) throws Exception{
+Socket sock = new Socket("127.0.0.1", 3000);
+BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
+OutputStream ostream = sock.getOutputStream();
+PrintWriter pwrite = new PrintWriter(ostream, true);
+InputStream istream = sock.getInputStream();
+BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+String receiveMessage, sendMessage,temp;
+while(true) {
+System.out.print("\nAvailable Procedures:\nadd, sub, mul and div\n\nEnter Procedure name
+: ");
+temp = keyRead.readLine();
+sendMessage=temp.toLowerCase();
+pwrite.println(sendMessage);
+System.out.print("Enter First param: ");
+sendMessage = keyRead.readLine();
+pwrite.println(sendMessage);
+System.out.print("Enter second param: ");
+sendMessage = keyRead.readLine();
+pwrite.println(sendMessage);
+System.out.flush();
+if((receiveMessage = receiveRead.readLine()) != null)
+System.out.println(receiveMessage);
+}}}
+
+
+
+
+
+
+PROGRAM_2
+
+RPC_Server.java
+import java.io.*;
+import java.net.*;
+class RPC_Server
+{
+public static void main(String[] args) throws Exception
+{
+ServerSocket sersock = new ServerSocket(3000);
+System.out.println("Server Started... ");
+Socket sock = sersock.accept( );
+OutputStream ostream = sock.getOutputStream();
+PrintWriter pwrite = new PrintWriter(ostream, true);
+InputStream istream = sock.getInputStream();
+BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+String fun;
+int id;
+String[] Users = {"Nisarg","Keyur","Rinkesh","Rashesh","Raghav"};
+while(true)
+{
+fun = receiveRead.readLine();
+if(fun != null)
+System.out.println("Requested Procedure : "+fun);
+id = Integer.parseInt(receiveRead.readLine());
+System.out.println("Parameters: "+id);
+if(fun.compareTo("finduser")==0)
+{
+pwrite.println("User = "+Users[id]);
+}
+System.out.flush();} } }
+
+
+Client.java
+iimport java.io.*;
+import java.net.*;
+class RPC_Client
+{
+public static void main(String[] args) throws Exception
+{
+Socket sock = new Socket("127.0.0.1", 3000);
+BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
+OutputStream ostream = sock.getOutputStream();
+PrintWriter pwrite = new PrintWriter(ostream, true);
+InputStream istream = sock.getInputStream();
+BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+String receiveMessage, sendMessage,temp;
+while(true)
+{
+System.out.print("\nAvailable Procedures:\nfindUser\n\nEnter Procedure name:");
+temp = keyRead.readLine();
+sendMessage=temp.toLowerCase();
+pwrite.println(sendMessage);
+System.out.print("Enter User's Id: ");
+sendMessage = keyRead.readLine();
+pwrite.println(sendMessage);
+System.out.flush();
+if((receiveMessage = receiveRead.readLine()) != null)
+System.out.println(receiveMessage);
+} }}
